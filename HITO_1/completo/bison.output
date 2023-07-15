@@ -1,0 +1,1571 @@
+Terminals unused in grammar
+
+   COMILLA
+   PUNTOCOMA
+
+
+Grammar
+
+    0 $accept: program $end
+
+    1 program: statement_list
+
+    2 statement_list: statement
+    3               | statement_list statement
+
+    4 statement: asignacion_statement
+    5          | si_statement
+    6          | mientras_statement
+    7          | para_statement
+    8          | imprimir_statement
+
+    9 imprimir_statement: IMPRIMIR PARENTESIS_APERTURA exp PARENTESIS_CIERRE
+
+   10 asignacion_statement: IDENTIFICADOR OPERADOR_ASIGNACION exp
+
+   11 si_statement: SI PARENTESIS_APERTURA condicion_list PARENTESIS_CIERRE statement_list osi_list FIN
+   12             | SI PARENTESIS_APERTURA condicion_list PARENTESIS_CIERRE statement_list FIN
+   13             | SI PARENTESIS_APERTURA condicion_list PARENTESIS_CIERRE statement_list SINO statement_list FIN
+
+   14 osi_list: osi
+   15         | osi_list osi
+
+   16 osi: OSI PARENTESIS_APERTURA condicion_list PARENTESIS_CIERRE statement_list
+
+   17 mientras_statement: MIENTRAS PARENTESIS_APERTURA condicion_list PARENTESIS_CIERRE statement_list FIN
+
+   18 para_statement: PARA IDENTIFICADOR EN RANGO PARENTESIS_APERTURA ENTERO COMA ENTERO PARENTESIS_CIERRE statement_list FIN
+   19               | PARA IDENTIFICADOR EN RANGO PARENTESIS_APERTURA ENTERO PARENTESIS_CIERRE statement_list FIN
+   20               | PARA IDENTIFICADOR EN RANGO PARENTESIS_APERTURA ENTERO COMA ENTERO COMA ENTERO PARENTESIS_CIERRE statement_list FIN
+
+   21 condicion_list: condicion_list OPERADOR_AND condicion
+   22               | condicion_list OPERADOR_OR condicion
+   23               | condicion
+
+   24 condicion: exp OPERADOR_MAYOR exp
+   25          | exp OPERADOR_MENOR exp
+   26          | exp OPERADOR_MAYOR_IGUAL exp
+   27          | exp OPERADOR_MENOR_IGUAL exp
+   28          | exp OPERADOR_IGUAL exp
+   29          | exp OPERADOR_DIFERENTE exp
+   30          | exp OPERADOR_AND exp
+   31          | exp OPERADOR_OR exp
+
+   32 exp: OPERADOR_NEGACION exp
+   33    | exp OPERADOR_SUMA term
+   34    | exp OPERADOR_RESTA term
+   35    | exp CONCATENAR term
+   36    | term
+
+   37 term: term OPERADOR_MULTIPLICACION factor
+   38     | term OPERADOR_DIVISION factor
+   39     | term MODULO factor
+   40     | term EXPONENTE factor
+   41     | factor
+   42     | IDENTIFICADOR
+
+   43 factor: ENTERO
+   44       | OPERADOR_RESTA ENTERO
+   45       | REAL
+   46       | OPERADOR_RESTA REAL
+   47       | PARENTESIS_APERTURA exp PARENTESIS_CIERRE
+   48       | TEXTO
+   49       | BOOL
+
+
+Terminals, with rules where they appear
+
+$end (0) 0
+error (256)
+OPERADOR_SUMA (258) 33
+OPERADOR_RESTA (259) 34 44 46
+OPERADOR_MULTIPLICACION (260) 37
+OPERADOR_DIVISION (261) 38
+PARENTESIS_APERTURA (262) 9 11 12 13 16 17 18 19 20 47
+PARENTESIS_CIERRE (263) 9 11 12 13 16 17 18 19 20 47
+CONCATENAR (264) 35
+COMILLA (265)
+OPERADOR_ASIGNACION (266) 10
+SI (267) 11 12 13
+OSI (268) 16
+SINO (269) 13
+MIENTRAS (270) 17
+FIN (271) 11 12 13 17 18 19 20
+OPERADOR_AND (272) 21 30
+OPERADOR_OR (273) 22 31
+IMPRIMIR (274) 9
+OPERADOR_NEGACION (275) 32
+OPERADOR_MAYOR (276) 24
+OPERADOR_MENOR (277) 25
+MODULO (278) 39
+EXPONENTE (279) 40
+OPERADOR_MAYOR_IGUAL (280) 26
+OPERADOR_IGUAL (281) 28
+OPERADOR_MENOR_IGUAL (282) 27
+PUNTOCOMA (283)
+PARA (284) 18 19 20
+EN (285) 18 19 20
+RANGO (286) 18 19 20
+COMA (287) 18 20
+OPERADOR_DIFERENTE (288) 29
+ENTERO (289) 18 19 20 43 44
+REAL (290) 45 46
+TEXTO (291) 48
+IDENTIFICADOR (292) 10 18 19 20 42
+BOOL (293) 49
+
+
+Nonterminals, with rules where they appear
+
+$accept (39)
+    on left: 0
+program (40)
+    on left: 1, on right: 0
+statement_list (41)
+    on left: 2 3, on right: 1 3 11 12 13 16 17 18 19 20
+statement (42)
+    on left: 4 5 6 7 8, on right: 2 3
+imprimir_statement (43)
+    on left: 9, on right: 8
+asignacion_statement (44)
+    on left: 10, on right: 4
+si_statement (45)
+    on left: 11 12 13, on right: 5
+osi_list (46)
+    on left: 14 15, on right: 11 15
+osi (47)
+    on left: 16, on right: 14 15
+mientras_statement (48)
+    on left: 17, on right: 6
+para_statement (49)
+    on left: 18 19 20, on right: 7
+condicion_list (50)
+    on left: 21 22 23, on right: 11 12 13 16 17 21 22
+condicion (51)
+    on left: 24 25 26 27 28 29 30 31, on right: 21 22 23
+exp (52)
+    on left: 32 33 34 35 36, on right: 9 10 24 25 26 27 28 29 30 31
+    32 33 34 35 47
+term (53)
+    on left: 37 38 39 40 41 42, on right: 33 34 35 36 37 38 39 40
+factor (54)
+    on left: 43 44 45 46 47 48 49, on right: 37 38 39 40 41
+
+
+state 0
+
+    0 $accept: . program $end
+
+    SI             shift, and go to state 1
+    MIENTRAS       shift, and go to state 2
+    IMPRIMIR       shift, and go to state 3
+    PARA           shift, and go to state 4
+    IDENTIFICADOR  shift, and go to state 5
+
+    program               go to state 6
+    statement_list        go to state 7
+    statement             go to state 8
+    imprimir_statement    go to state 9
+    asignacion_statement  go to state 10
+    si_statement          go to state 11
+    mientras_statement    go to state 12
+    para_statement        go to state 13
+
+
+state 1
+
+   11 si_statement: SI . PARENTESIS_APERTURA condicion_list PARENTESIS_CIERRE statement_list osi_list FIN
+   12             | SI . PARENTESIS_APERTURA condicion_list PARENTESIS_CIERRE statement_list FIN
+   13             | SI . PARENTESIS_APERTURA condicion_list PARENTESIS_CIERRE statement_list SINO statement_list FIN
+
+    PARENTESIS_APERTURA  shift, and go to state 14
+
+
+state 2
+
+   17 mientras_statement: MIENTRAS . PARENTESIS_APERTURA condicion_list PARENTESIS_CIERRE statement_list FIN
+
+    PARENTESIS_APERTURA  shift, and go to state 15
+
+
+state 3
+
+    9 imprimir_statement: IMPRIMIR . PARENTESIS_APERTURA exp PARENTESIS_CIERRE
+
+    PARENTESIS_APERTURA  shift, and go to state 16
+
+
+state 4
+
+   18 para_statement: PARA . IDENTIFICADOR EN RANGO PARENTESIS_APERTURA ENTERO COMA ENTERO PARENTESIS_CIERRE statement_list FIN
+   19               | PARA . IDENTIFICADOR EN RANGO PARENTESIS_APERTURA ENTERO PARENTESIS_CIERRE statement_list FIN
+   20               | PARA . IDENTIFICADOR EN RANGO PARENTESIS_APERTURA ENTERO COMA ENTERO COMA ENTERO PARENTESIS_CIERRE statement_list FIN
+
+    IDENTIFICADOR  shift, and go to state 17
+
+
+state 5
+
+   10 asignacion_statement: IDENTIFICADOR . OPERADOR_ASIGNACION exp
+
+    OPERADOR_ASIGNACION  shift, and go to state 18
+
+
+state 6
+
+    0 $accept: program . $end
+
+    $end  shift, and go to state 19
+
+
+state 7
+
+    1 program: statement_list .
+    3 statement_list: statement_list . statement
+
+    SI             shift, and go to state 1
+    MIENTRAS       shift, and go to state 2
+    IMPRIMIR       shift, and go to state 3
+    PARA           shift, and go to state 4
+    IDENTIFICADOR  shift, and go to state 5
+
+    $default  reduce using rule 1 (program)
+
+    statement             go to state 20
+    imprimir_statement    go to state 9
+    asignacion_statement  go to state 10
+    si_statement          go to state 11
+    mientras_statement    go to state 12
+    para_statement        go to state 13
+
+
+state 8
+
+    2 statement_list: statement .
+
+    $default  reduce using rule 2 (statement_list)
+
+
+state 9
+
+    8 statement: imprimir_statement .
+
+    $default  reduce using rule 8 (statement)
+
+
+state 10
+
+    4 statement: asignacion_statement .
+
+    $default  reduce using rule 4 (statement)
+
+
+state 11
+
+    5 statement: si_statement .
+
+    $default  reduce using rule 5 (statement)
+
+
+state 12
+
+    6 statement: mientras_statement .
+
+    $default  reduce using rule 6 (statement)
+
+
+state 13
+
+    7 statement: para_statement .
+
+    $default  reduce using rule 7 (statement)
+
+
+state 14
+
+   11 si_statement: SI PARENTESIS_APERTURA . condicion_list PARENTESIS_CIERRE statement_list osi_list FIN
+   12             | SI PARENTESIS_APERTURA . condicion_list PARENTESIS_CIERRE statement_list FIN
+   13             | SI PARENTESIS_APERTURA . condicion_list PARENTESIS_CIERRE statement_list SINO statement_list FIN
+
+    OPERADOR_RESTA       shift, and go to state 21
+    PARENTESIS_APERTURA  shift, and go to state 22
+    OPERADOR_NEGACION    shift, and go to state 23
+    ENTERO               shift, and go to state 24
+    REAL                 shift, and go to state 25
+    TEXTO                shift, and go to state 26
+    IDENTIFICADOR        shift, and go to state 27
+    BOOL                 shift, and go to state 28
+
+    condicion_list  go to state 29
+    condicion       go to state 30
+    exp             go to state 31
+    term            go to state 32
+    factor          go to state 33
+
+
+state 15
+
+   17 mientras_statement: MIENTRAS PARENTESIS_APERTURA . condicion_list PARENTESIS_CIERRE statement_list FIN
+
+    OPERADOR_RESTA       shift, and go to state 21
+    PARENTESIS_APERTURA  shift, and go to state 22
+    OPERADOR_NEGACION    shift, and go to state 23
+    ENTERO               shift, and go to state 24
+    REAL                 shift, and go to state 25
+    TEXTO                shift, and go to state 26
+    IDENTIFICADOR        shift, and go to state 27
+    BOOL                 shift, and go to state 28
+
+    condicion_list  go to state 34
+    condicion       go to state 30
+    exp             go to state 31
+    term            go to state 32
+    factor          go to state 33
+
+
+state 16
+
+    9 imprimir_statement: IMPRIMIR PARENTESIS_APERTURA . exp PARENTESIS_CIERRE
+
+    OPERADOR_RESTA       shift, and go to state 21
+    PARENTESIS_APERTURA  shift, and go to state 22
+    OPERADOR_NEGACION    shift, and go to state 23
+    ENTERO               shift, and go to state 24
+    REAL                 shift, and go to state 25
+    TEXTO                shift, and go to state 26
+    IDENTIFICADOR        shift, and go to state 27
+    BOOL                 shift, and go to state 28
+
+    exp     go to state 35
+    term    go to state 32
+    factor  go to state 33
+
+
+state 17
+
+   18 para_statement: PARA IDENTIFICADOR . EN RANGO PARENTESIS_APERTURA ENTERO COMA ENTERO PARENTESIS_CIERRE statement_list FIN
+   19               | PARA IDENTIFICADOR . EN RANGO PARENTESIS_APERTURA ENTERO PARENTESIS_CIERRE statement_list FIN
+   20               | PARA IDENTIFICADOR . EN RANGO PARENTESIS_APERTURA ENTERO COMA ENTERO COMA ENTERO PARENTESIS_CIERRE statement_list FIN
+
+    EN  shift, and go to state 36
+
+
+state 18
+
+   10 asignacion_statement: IDENTIFICADOR OPERADOR_ASIGNACION . exp
+
+    OPERADOR_RESTA       shift, and go to state 21
+    PARENTESIS_APERTURA  shift, and go to state 22
+    OPERADOR_NEGACION    shift, and go to state 23
+    ENTERO               shift, and go to state 24
+    REAL                 shift, and go to state 25
+    TEXTO                shift, and go to state 26
+    IDENTIFICADOR        shift, and go to state 27
+    BOOL                 shift, and go to state 28
+
+    exp     go to state 37
+    term    go to state 32
+    factor  go to state 33
+
+
+state 19
+
+    0 $accept: program $end .
+
+    $default  accept
+
+
+state 20
+
+    3 statement_list: statement_list statement .
+
+    $default  reduce using rule 3 (statement_list)
+
+
+state 21
+
+   44 factor: OPERADOR_RESTA . ENTERO
+   46       | OPERADOR_RESTA . REAL
+
+    ENTERO  shift, and go to state 38
+    REAL    shift, and go to state 39
+
+
+state 22
+
+   47 factor: PARENTESIS_APERTURA . exp PARENTESIS_CIERRE
+
+    OPERADOR_RESTA       shift, and go to state 21
+    PARENTESIS_APERTURA  shift, and go to state 22
+    OPERADOR_NEGACION    shift, and go to state 23
+    ENTERO               shift, and go to state 24
+    REAL                 shift, and go to state 25
+    TEXTO                shift, and go to state 26
+    IDENTIFICADOR        shift, and go to state 27
+    BOOL                 shift, and go to state 28
+
+    exp     go to state 40
+    term    go to state 32
+    factor  go to state 33
+
+
+state 23
+
+   32 exp: OPERADOR_NEGACION . exp
+
+    OPERADOR_RESTA       shift, and go to state 21
+    PARENTESIS_APERTURA  shift, and go to state 22
+    OPERADOR_NEGACION    shift, and go to state 23
+    ENTERO               shift, and go to state 24
+    REAL                 shift, and go to state 25
+    TEXTO                shift, and go to state 26
+    IDENTIFICADOR        shift, and go to state 27
+    BOOL                 shift, and go to state 28
+
+    exp     go to state 41
+    term    go to state 32
+    factor  go to state 33
+
+
+state 24
+
+   43 factor: ENTERO .
+
+    $default  reduce using rule 43 (factor)
+
+
+state 25
+
+   45 factor: REAL .
+
+    $default  reduce using rule 45 (factor)
+
+
+state 26
+
+   48 factor: TEXTO .
+
+    $default  reduce using rule 48 (factor)
+
+
+state 27
+
+   42 term: IDENTIFICADOR .
+
+    $default  reduce using rule 42 (term)
+
+
+state 28
+
+   49 factor: BOOL .
+
+    $default  reduce using rule 49 (factor)
+
+
+state 29
+
+   11 si_statement: SI PARENTESIS_APERTURA condicion_list . PARENTESIS_CIERRE statement_list osi_list FIN
+   12             | SI PARENTESIS_APERTURA condicion_list . PARENTESIS_CIERRE statement_list FIN
+   13             | SI PARENTESIS_APERTURA condicion_list . PARENTESIS_CIERRE statement_list SINO statement_list FIN
+   21 condicion_list: condicion_list . OPERADOR_AND condicion
+   22               | condicion_list . OPERADOR_OR condicion
+
+    PARENTESIS_CIERRE  shift, and go to state 42
+    OPERADOR_AND       shift, and go to state 43
+    OPERADOR_OR        shift, and go to state 44
+
+
+state 30
+
+   23 condicion_list: condicion .
+
+    $default  reduce using rule 23 (condicion_list)
+
+
+state 31
+
+   24 condicion: exp . OPERADOR_MAYOR exp
+   25          | exp . OPERADOR_MENOR exp
+   26          | exp . OPERADOR_MAYOR_IGUAL exp
+   27          | exp . OPERADOR_MENOR_IGUAL exp
+   28          | exp . OPERADOR_IGUAL exp
+   29          | exp . OPERADOR_DIFERENTE exp
+   30          | exp . OPERADOR_AND exp
+   31          | exp . OPERADOR_OR exp
+   33 exp: exp . OPERADOR_SUMA term
+   34    | exp . OPERADOR_RESTA term
+   35    | exp . CONCATENAR term
+
+    OPERADOR_SUMA         shift, and go to state 45
+    OPERADOR_RESTA        shift, and go to state 46
+    CONCATENAR            shift, and go to state 47
+    OPERADOR_AND          shift, and go to state 48
+    OPERADOR_OR           shift, and go to state 49
+    OPERADOR_MAYOR        shift, and go to state 50
+    OPERADOR_MENOR        shift, and go to state 51
+    OPERADOR_MAYOR_IGUAL  shift, and go to state 52
+    OPERADOR_IGUAL        shift, and go to state 53
+    OPERADOR_MENOR_IGUAL  shift, and go to state 54
+    OPERADOR_DIFERENTE    shift, and go to state 55
+
+
+state 32
+
+   36 exp: term .
+   37 term: term . OPERADOR_MULTIPLICACION factor
+   38     | term . OPERADOR_DIVISION factor
+   39     | term . MODULO factor
+   40     | term . EXPONENTE factor
+
+    OPERADOR_MULTIPLICACION  shift, and go to state 56
+    OPERADOR_DIVISION        shift, and go to state 57
+    MODULO                   shift, and go to state 58
+    EXPONENTE                shift, and go to state 59
+
+    $default  reduce using rule 36 (exp)
+
+
+state 33
+
+   41 term: factor .
+
+    $default  reduce using rule 41 (term)
+
+
+state 34
+
+   17 mientras_statement: MIENTRAS PARENTESIS_APERTURA condicion_list . PARENTESIS_CIERRE statement_list FIN
+   21 condicion_list: condicion_list . OPERADOR_AND condicion
+   22               | condicion_list . OPERADOR_OR condicion
+
+    PARENTESIS_CIERRE  shift, and go to state 60
+    OPERADOR_AND       shift, and go to state 43
+    OPERADOR_OR        shift, and go to state 44
+
+
+state 35
+
+    9 imprimir_statement: IMPRIMIR PARENTESIS_APERTURA exp . PARENTESIS_CIERRE
+   33 exp: exp . OPERADOR_SUMA term
+   34    | exp . OPERADOR_RESTA term
+   35    | exp . CONCATENAR term
+
+    OPERADOR_SUMA      shift, and go to state 45
+    OPERADOR_RESTA     shift, and go to state 46
+    PARENTESIS_CIERRE  shift, and go to state 61
+    CONCATENAR         shift, and go to state 47
+
+
+state 36
+
+   18 para_statement: PARA IDENTIFICADOR EN . RANGO PARENTESIS_APERTURA ENTERO COMA ENTERO PARENTESIS_CIERRE statement_list FIN
+   19               | PARA IDENTIFICADOR EN . RANGO PARENTESIS_APERTURA ENTERO PARENTESIS_CIERRE statement_list FIN
+   20               | PARA IDENTIFICADOR EN . RANGO PARENTESIS_APERTURA ENTERO COMA ENTERO COMA ENTERO PARENTESIS_CIERRE statement_list FIN
+
+    RANGO  shift, and go to state 62
+
+
+state 37
+
+   10 asignacion_statement: IDENTIFICADOR OPERADOR_ASIGNACION exp .
+   33 exp: exp . OPERADOR_SUMA term
+   34    | exp . OPERADOR_RESTA term
+   35    | exp . CONCATENAR term
+
+    OPERADOR_SUMA   shift, and go to state 45
+    OPERADOR_RESTA  shift, and go to state 46
+    CONCATENAR      shift, and go to state 47
+
+    $default  reduce using rule 10 (asignacion_statement)
+
+
+state 38
+
+   44 factor: OPERADOR_RESTA ENTERO .
+
+    $default  reduce using rule 44 (factor)
+
+
+state 39
+
+   46 factor: OPERADOR_RESTA REAL .
+
+    $default  reduce using rule 46 (factor)
+
+
+state 40
+
+   33 exp: exp . OPERADOR_SUMA term
+   34    | exp . OPERADOR_RESTA term
+   35    | exp . CONCATENAR term
+   47 factor: PARENTESIS_APERTURA exp . PARENTESIS_CIERRE
+
+    OPERADOR_SUMA      shift, and go to state 45
+    OPERADOR_RESTA     shift, and go to state 46
+    PARENTESIS_CIERRE  shift, and go to state 63
+    CONCATENAR         shift, and go to state 47
+
+
+state 41
+
+   32 exp: OPERADOR_NEGACION exp .
+   33    | exp . OPERADOR_SUMA term
+   34    | exp . OPERADOR_RESTA term
+   35    | exp . CONCATENAR term
+
+    $default  reduce using rule 32 (exp)
+
+
+state 42
+
+   11 si_statement: SI PARENTESIS_APERTURA condicion_list PARENTESIS_CIERRE . statement_list osi_list FIN
+   12             | SI PARENTESIS_APERTURA condicion_list PARENTESIS_CIERRE . statement_list FIN
+   13             | SI PARENTESIS_APERTURA condicion_list PARENTESIS_CIERRE . statement_list SINO statement_list FIN
+
+    SI             shift, and go to state 1
+    MIENTRAS       shift, and go to state 2
+    IMPRIMIR       shift, and go to state 3
+    PARA           shift, and go to state 4
+    IDENTIFICADOR  shift, and go to state 5
+
+    statement_list        go to state 64
+    statement             go to state 8
+    imprimir_statement    go to state 9
+    asignacion_statement  go to state 10
+    si_statement          go to state 11
+    mientras_statement    go to state 12
+    para_statement        go to state 13
+
+
+state 43
+
+   21 condicion_list: condicion_list OPERADOR_AND . condicion
+
+    OPERADOR_RESTA       shift, and go to state 21
+    PARENTESIS_APERTURA  shift, and go to state 22
+    OPERADOR_NEGACION    shift, and go to state 23
+    ENTERO               shift, and go to state 24
+    REAL                 shift, and go to state 25
+    TEXTO                shift, and go to state 26
+    IDENTIFICADOR        shift, and go to state 27
+    BOOL                 shift, and go to state 28
+
+    condicion  go to state 65
+    exp        go to state 31
+    term       go to state 32
+    factor     go to state 33
+
+
+state 44
+
+   22 condicion_list: condicion_list OPERADOR_OR . condicion
+
+    OPERADOR_RESTA       shift, and go to state 21
+    PARENTESIS_APERTURA  shift, and go to state 22
+    OPERADOR_NEGACION    shift, and go to state 23
+    ENTERO               shift, and go to state 24
+    REAL                 shift, and go to state 25
+    TEXTO                shift, and go to state 26
+    IDENTIFICADOR        shift, and go to state 27
+    BOOL                 shift, and go to state 28
+
+    condicion  go to state 66
+    exp        go to state 31
+    term       go to state 32
+    factor     go to state 33
+
+
+state 45
+
+   33 exp: exp OPERADOR_SUMA . term
+
+    OPERADOR_RESTA       shift, and go to state 21
+    PARENTESIS_APERTURA  shift, and go to state 22
+    ENTERO               shift, and go to state 24
+    REAL                 shift, and go to state 25
+    TEXTO                shift, and go to state 26
+    IDENTIFICADOR        shift, and go to state 27
+    BOOL                 shift, and go to state 28
+
+    term    go to state 67
+    factor  go to state 33
+
+
+state 46
+
+   34 exp: exp OPERADOR_RESTA . term
+
+    OPERADOR_RESTA       shift, and go to state 21
+    PARENTESIS_APERTURA  shift, and go to state 22
+    ENTERO               shift, and go to state 24
+    REAL                 shift, and go to state 25
+    TEXTO                shift, and go to state 26
+    IDENTIFICADOR        shift, and go to state 27
+    BOOL                 shift, and go to state 28
+
+    term    go to state 68
+    factor  go to state 33
+
+
+state 47
+
+   35 exp: exp CONCATENAR . term
+
+    OPERADOR_RESTA       shift, and go to state 21
+    PARENTESIS_APERTURA  shift, and go to state 22
+    ENTERO               shift, and go to state 24
+    REAL                 shift, and go to state 25
+    TEXTO                shift, and go to state 26
+    IDENTIFICADOR        shift, and go to state 27
+    BOOL                 shift, and go to state 28
+
+    term    go to state 69
+    factor  go to state 33
+
+
+state 48
+
+   30 condicion: exp OPERADOR_AND . exp
+
+    OPERADOR_RESTA       shift, and go to state 21
+    PARENTESIS_APERTURA  shift, and go to state 22
+    OPERADOR_NEGACION    shift, and go to state 23
+    ENTERO               shift, and go to state 24
+    REAL                 shift, and go to state 25
+    TEXTO                shift, and go to state 26
+    IDENTIFICADOR        shift, and go to state 27
+    BOOL                 shift, and go to state 28
+
+    exp     go to state 70
+    term    go to state 32
+    factor  go to state 33
+
+
+state 49
+
+   31 condicion: exp OPERADOR_OR . exp
+
+    OPERADOR_RESTA       shift, and go to state 21
+    PARENTESIS_APERTURA  shift, and go to state 22
+    OPERADOR_NEGACION    shift, and go to state 23
+    ENTERO               shift, and go to state 24
+    REAL                 shift, and go to state 25
+    TEXTO                shift, and go to state 26
+    IDENTIFICADOR        shift, and go to state 27
+    BOOL                 shift, and go to state 28
+
+    exp     go to state 71
+    term    go to state 32
+    factor  go to state 33
+
+
+state 50
+
+   24 condicion: exp OPERADOR_MAYOR . exp
+
+    OPERADOR_RESTA       shift, and go to state 21
+    PARENTESIS_APERTURA  shift, and go to state 22
+    OPERADOR_NEGACION    shift, and go to state 23
+    ENTERO               shift, and go to state 24
+    REAL                 shift, and go to state 25
+    TEXTO                shift, and go to state 26
+    IDENTIFICADOR        shift, and go to state 27
+    BOOL                 shift, and go to state 28
+
+    exp     go to state 72
+    term    go to state 32
+    factor  go to state 33
+
+
+state 51
+
+   25 condicion: exp OPERADOR_MENOR . exp
+
+    OPERADOR_RESTA       shift, and go to state 21
+    PARENTESIS_APERTURA  shift, and go to state 22
+    OPERADOR_NEGACION    shift, and go to state 23
+    ENTERO               shift, and go to state 24
+    REAL                 shift, and go to state 25
+    TEXTO                shift, and go to state 26
+    IDENTIFICADOR        shift, and go to state 27
+    BOOL                 shift, and go to state 28
+
+    exp     go to state 73
+    term    go to state 32
+    factor  go to state 33
+
+
+state 52
+
+   26 condicion: exp OPERADOR_MAYOR_IGUAL . exp
+
+    OPERADOR_RESTA       shift, and go to state 21
+    PARENTESIS_APERTURA  shift, and go to state 22
+    OPERADOR_NEGACION    shift, and go to state 23
+    ENTERO               shift, and go to state 24
+    REAL                 shift, and go to state 25
+    TEXTO                shift, and go to state 26
+    IDENTIFICADOR        shift, and go to state 27
+    BOOL                 shift, and go to state 28
+
+    exp     go to state 74
+    term    go to state 32
+    factor  go to state 33
+
+
+state 53
+
+   28 condicion: exp OPERADOR_IGUAL . exp
+
+    OPERADOR_RESTA       shift, and go to state 21
+    PARENTESIS_APERTURA  shift, and go to state 22
+    OPERADOR_NEGACION    shift, and go to state 23
+    ENTERO               shift, and go to state 24
+    REAL                 shift, and go to state 25
+    TEXTO                shift, and go to state 26
+    IDENTIFICADOR        shift, and go to state 27
+    BOOL                 shift, and go to state 28
+
+    exp     go to state 75
+    term    go to state 32
+    factor  go to state 33
+
+
+state 54
+
+   27 condicion: exp OPERADOR_MENOR_IGUAL . exp
+
+    OPERADOR_RESTA       shift, and go to state 21
+    PARENTESIS_APERTURA  shift, and go to state 22
+    OPERADOR_NEGACION    shift, and go to state 23
+    ENTERO               shift, and go to state 24
+    REAL                 shift, and go to state 25
+    TEXTO                shift, and go to state 26
+    IDENTIFICADOR        shift, and go to state 27
+    BOOL                 shift, and go to state 28
+
+    exp     go to state 76
+    term    go to state 32
+    factor  go to state 33
+
+
+state 55
+
+   29 condicion: exp OPERADOR_DIFERENTE . exp
+
+    OPERADOR_RESTA       shift, and go to state 21
+    PARENTESIS_APERTURA  shift, and go to state 22
+    OPERADOR_NEGACION    shift, and go to state 23
+    ENTERO               shift, and go to state 24
+    REAL                 shift, and go to state 25
+    TEXTO                shift, and go to state 26
+    IDENTIFICADOR        shift, and go to state 27
+    BOOL                 shift, and go to state 28
+
+    exp     go to state 77
+    term    go to state 32
+    factor  go to state 33
+
+
+state 56
+
+   37 term: term OPERADOR_MULTIPLICACION . factor
+
+    OPERADOR_RESTA       shift, and go to state 21
+    PARENTESIS_APERTURA  shift, and go to state 22
+    ENTERO               shift, and go to state 24
+    REAL                 shift, and go to state 25
+    TEXTO                shift, and go to state 26
+    BOOL                 shift, and go to state 28
+
+    factor  go to state 78
+
+
+state 57
+
+   38 term: term OPERADOR_DIVISION . factor
+
+    OPERADOR_RESTA       shift, and go to state 21
+    PARENTESIS_APERTURA  shift, and go to state 22
+    ENTERO               shift, and go to state 24
+    REAL                 shift, and go to state 25
+    TEXTO                shift, and go to state 26
+    BOOL                 shift, and go to state 28
+
+    factor  go to state 79
+
+
+state 58
+
+   39 term: term MODULO . factor
+
+    OPERADOR_RESTA       shift, and go to state 21
+    PARENTESIS_APERTURA  shift, and go to state 22
+    ENTERO               shift, and go to state 24
+    REAL                 shift, and go to state 25
+    TEXTO                shift, and go to state 26
+    BOOL                 shift, and go to state 28
+
+    factor  go to state 80
+
+
+state 59
+
+   40 term: term EXPONENTE . factor
+
+    OPERADOR_RESTA       shift, and go to state 21
+    PARENTESIS_APERTURA  shift, and go to state 22
+    ENTERO               shift, and go to state 24
+    REAL                 shift, and go to state 25
+    TEXTO                shift, and go to state 26
+    BOOL                 shift, and go to state 28
+
+    factor  go to state 81
+
+
+state 60
+
+   17 mientras_statement: MIENTRAS PARENTESIS_APERTURA condicion_list PARENTESIS_CIERRE . statement_list FIN
+
+    SI             shift, and go to state 1
+    MIENTRAS       shift, and go to state 2
+    IMPRIMIR       shift, and go to state 3
+    PARA           shift, and go to state 4
+    IDENTIFICADOR  shift, and go to state 5
+
+    statement_list        go to state 82
+    statement             go to state 8
+    imprimir_statement    go to state 9
+    asignacion_statement  go to state 10
+    si_statement          go to state 11
+    mientras_statement    go to state 12
+    para_statement        go to state 13
+
+
+state 61
+
+    9 imprimir_statement: IMPRIMIR PARENTESIS_APERTURA exp PARENTESIS_CIERRE .
+
+    $default  reduce using rule 9 (imprimir_statement)
+
+
+state 62
+
+   18 para_statement: PARA IDENTIFICADOR EN RANGO . PARENTESIS_APERTURA ENTERO COMA ENTERO PARENTESIS_CIERRE statement_list FIN
+   19               | PARA IDENTIFICADOR EN RANGO . PARENTESIS_APERTURA ENTERO PARENTESIS_CIERRE statement_list FIN
+   20               | PARA IDENTIFICADOR EN RANGO . PARENTESIS_APERTURA ENTERO COMA ENTERO COMA ENTERO PARENTESIS_CIERRE statement_list FIN
+
+    PARENTESIS_APERTURA  shift, and go to state 83
+
+
+state 63
+
+   47 factor: PARENTESIS_APERTURA exp PARENTESIS_CIERRE .
+
+    $default  reduce using rule 47 (factor)
+
+
+state 64
+
+    3 statement_list: statement_list . statement
+   11 si_statement: SI PARENTESIS_APERTURA condicion_list PARENTESIS_CIERRE statement_list . osi_list FIN
+   12             | SI PARENTESIS_APERTURA condicion_list PARENTESIS_CIERRE statement_list . FIN
+   13             | SI PARENTESIS_APERTURA condicion_list PARENTESIS_CIERRE statement_list . SINO statement_list FIN
+
+    SI             shift, and go to state 1
+    OSI            shift, and go to state 84
+    SINO           shift, and go to state 85
+    MIENTRAS       shift, and go to state 2
+    FIN            shift, and go to state 86
+    IMPRIMIR       shift, and go to state 3
+    PARA           shift, and go to state 4
+    IDENTIFICADOR  shift, and go to state 5
+
+    statement             go to state 20
+    imprimir_statement    go to state 9
+    asignacion_statement  go to state 10
+    si_statement          go to state 11
+    osi_list              go to state 87
+    osi                   go to state 88
+    mientras_statement    go to state 12
+    para_statement        go to state 13
+
+
+state 65
+
+   21 condicion_list: condicion_list OPERADOR_AND condicion .
+
+    $default  reduce using rule 21 (condicion_list)
+
+
+state 66
+
+   22 condicion_list: condicion_list OPERADOR_OR condicion .
+
+    $default  reduce using rule 22 (condicion_list)
+
+
+state 67
+
+   33 exp: exp OPERADOR_SUMA term .
+   37 term: term . OPERADOR_MULTIPLICACION factor
+   38     | term . OPERADOR_DIVISION factor
+   39     | term . MODULO factor
+   40     | term . EXPONENTE factor
+
+    OPERADOR_MULTIPLICACION  shift, and go to state 56
+    OPERADOR_DIVISION        shift, and go to state 57
+    MODULO                   shift, and go to state 58
+    EXPONENTE                shift, and go to state 59
+
+    $default  reduce using rule 33 (exp)
+
+
+state 68
+
+   34 exp: exp OPERADOR_RESTA term .
+   37 term: term . OPERADOR_MULTIPLICACION factor
+   38     | term . OPERADOR_DIVISION factor
+   39     | term . MODULO factor
+   40     | term . EXPONENTE factor
+
+    OPERADOR_MULTIPLICACION  shift, and go to state 56
+    OPERADOR_DIVISION        shift, and go to state 57
+    MODULO                   shift, and go to state 58
+    EXPONENTE                shift, and go to state 59
+
+    $default  reduce using rule 34 (exp)
+
+
+state 69
+
+   35 exp: exp CONCATENAR term .
+   37 term: term . OPERADOR_MULTIPLICACION factor
+   38     | term . OPERADOR_DIVISION factor
+   39     | term . MODULO factor
+   40     | term . EXPONENTE factor
+
+    OPERADOR_MULTIPLICACION  shift, and go to state 56
+    OPERADOR_DIVISION        shift, and go to state 57
+    MODULO                   shift, and go to state 58
+    EXPONENTE                shift, and go to state 59
+
+    $default  reduce using rule 35 (exp)
+
+
+state 70
+
+   30 condicion: exp OPERADOR_AND exp .
+   33 exp: exp . OPERADOR_SUMA term
+   34    | exp . OPERADOR_RESTA term
+   35    | exp . CONCATENAR term
+
+    OPERADOR_SUMA   shift, and go to state 45
+    OPERADOR_RESTA  shift, and go to state 46
+    CONCATENAR      shift, and go to state 47
+
+    $default  reduce using rule 30 (condicion)
+
+
+state 71
+
+   31 condicion: exp OPERADOR_OR exp .
+   33 exp: exp . OPERADOR_SUMA term
+   34    | exp . OPERADOR_RESTA term
+   35    | exp . CONCATENAR term
+
+    OPERADOR_SUMA   shift, and go to state 45
+    OPERADOR_RESTA  shift, and go to state 46
+    CONCATENAR      shift, and go to state 47
+
+    $default  reduce using rule 31 (condicion)
+
+
+state 72
+
+   24 condicion: exp OPERADOR_MAYOR exp .
+   33 exp: exp . OPERADOR_SUMA term
+   34    | exp . OPERADOR_RESTA term
+   35    | exp . CONCATENAR term
+
+    OPERADOR_SUMA   shift, and go to state 45
+    OPERADOR_RESTA  shift, and go to state 46
+    CONCATENAR      shift, and go to state 47
+
+    $default  reduce using rule 24 (condicion)
+
+
+state 73
+
+   25 condicion: exp OPERADOR_MENOR exp .
+   33 exp: exp . OPERADOR_SUMA term
+   34    | exp . OPERADOR_RESTA term
+   35    | exp . CONCATENAR term
+
+    OPERADOR_SUMA   shift, and go to state 45
+    OPERADOR_RESTA  shift, and go to state 46
+    CONCATENAR      shift, and go to state 47
+
+    $default  reduce using rule 25 (condicion)
+
+
+state 74
+
+   26 condicion: exp OPERADOR_MAYOR_IGUAL exp .
+   33 exp: exp . OPERADOR_SUMA term
+   34    | exp . OPERADOR_RESTA term
+   35    | exp . CONCATENAR term
+
+    OPERADOR_SUMA   shift, and go to state 45
+    OPERADOR_RESTA  shift, and go to state 46
+    CONCATENAR      shift, and go to state 47
+
+    $default  reduce using rule 26 (condicion)
+
+
+state 75
+
+   28 condicion: exp OPERADOR_IGUAL exp .
+   33 exp: exp . OPERADOR_SUMA term
+   34    | exp . OPERADOR_RESTA term
+   35    | exp . CONCATENAR term
+
+    OPERADOR_SUMA   shift, and go to state 45
+    OPERADOR_RESTA  shift, and go to state 46
+    CONCATENAR      shift, and go to state 47
+
+    $default  reduce using rule 28 (condicion)
+
+
+state 76
+
+   27 condicion: exp OPERADOR_MENOR_IGUAL exp .
+   33 exp: exp . OPERADOR_SUMA term
+   34    | exp . OPERADOR_RESTA term
+   35    | exp . CONCATENAR term
+
+    OPERADOR_SUMA   shift, and go to state 45
+    OPERADOR_RESTA  shift, and go to state 46
+    CONCATENAR      shift, and go to state 47
+
+    $default  reduce using rule 27 (condicion)
+
+
+state 77
+
+   29 condicion: exp OPERADOR_DIFERENTE exp .
+   33 exp: exp . OPERADOR_SUMA term
+   34    | exp . OPERADOR_RESTA term
+   35    | exp . CONCATENAR term
+
+    OPERADOR_SUMA   shift, and go to state 45
+    OPERADOR_RESTA  shift, and go to state 46
+    CONCATENAR      shift, and go to state 47
+
+    $default  reduce using rule 29 (condicion)
+
+
+state 78
+
+   37 term: term OPERADOR_MULTIPLICACION factor .
+
+    $default  reduce using rule 37 (term)
+
+
+state 79
+
+   38 term: term OPERADOR_DIVISION factor .
+
+    $default  reduce using rule 38 (term)
+
+
+state 80
+
+   39 term: term MODULO factor .
+
+    $default  reduce using rule 39 (term)
+
+
+state 81
+
+   40 term: term EXPONENTE factor .
+
+    $default  reduce using rule 40 (term)
+
+
+state 82
+
+    3 statement_list: statement_list . statement
+   17 mientras_statement: MIENTRAS PARENTESIS_APERTURA condicion_list PARENTESIS_CIERRE statement_list . FIN
+
+    SI             shift, and go to state 1
+    MIENTRAS       shift, and go to state 2
+    FIN            shift, and go to state 89
+    IMPRIMIR       shift, and go to state 3
+    PARA           shift, and go to state 4
+    IDENTIFICADOR  shift, and go to state 5
+
+    statement             go to state 20
+    imprimir_statement    go to state 9
+    asignacion_statement  go to state 10
+    si_statement          go to state 11
+    mientras_statement    go to state 12
+    para_statement        go to state 13
+
+
+state 83
+
+   18 para_statement: PARA IDENTIFICADOR EN RANGO PARENTESIS_APERTURA . ENTERO COMA ENTERO PARENTESIS_CIERRE statement_list FIN
+   19               | PARA IDENTIFICADOR EN RANGO PARENTESIS_APERTURA . ENTERO PARENTESIS_CIERRE statement_list FIN
+   20               | PARA IDENTIFICADOR EN RANGO PARENTESIS_APERTURA . ENTERO COMA ENTERO COMA ENTERO PARENTESIS_CIERRE statement_list FIN
+
+    ENTERO  shift, and go to state 90
+
+
+state 84
+
+   16 osi: OSI . PARENTESIS_APERTURA condicion_list PARENTESIS_CIERRE statement_list
+
+    PARENTESIS_APERTURA  shift, and go to state 91
+
+
+state 85
+
+   13 si_statement: SI PARENTESIS_APERTURA condicion_list PARENTESIS_CIERRE statement_list SINO . statement_list FIN
+
+    SI             shift, and go to state 1
+    MIENTRAS       shift, and go to state 2
+    IMPRIMIR       shift, and go to state 3
+    PARA           shift, and go to state 4
+    IDENTIFICADOR  shift, and go to state 5
+
+    statement_list        go to state 92
+    statement             go to state 8
+    imprimir_statement    go to state 9
+    asignacion_statement  go to state 10
+    si_statement          go to state 11
+    mientras_statement    go to state 12
+    para_statement        go to state 13
+
+
+state 86
+
+   12 si_statement: SI PARENTESIS_APERTURA condicion_list PARENTESIS_CIERRE statement_list FIN .
+
+    $default  reduce using rule 12 (si_statement)
+
+
+state 87
+
+   11 si_statement: SI PARENTESIS_APERTURA condicion_list PARENTESIS_CIERRE statement_list osi_list . FIN
+   15 osi_list: osi_list . osi
+
+    OSI  shift, and go to state 84
+    FIN  shift, and go to state 93
+
+    osi  go to state 94
+
+
+state 88
+
+   14 osi_list: osi .
+
+    $default  reduce using rule 14 (osi_list)
+
+
+state 89
+
+   17 mientras_statement: MIENTRAS PARENTESIS_APERTURA condicion_list PARENTESIS_CIERRE statement_list FIN .
+
+    $default  reduce using rule 17 (mientras_statement)
+
+
+state 90
+
+   18 para_statement: PARA IDENTIFICADOR EN RANGO PARENTESIS_APERTURA ENTERO . COMA ENTERO PARENTESIS_CIERRE statement_list FIN
+   19               | PARA IDENTIFICADOR EN RANGO PARENTESIS_APERTURA ENTERO . PARENTESIS_CIERRE statement_list FIN
+   20               | PARA IDENTIFICADOR EN RANGO PARENTESIS_APERTURA ENTERO . COMA ENTERO COMA ENTERO PARENTESIS_CIERRE statement_list FIN
+
+    PARENTESIS_CIERRE  shift, and go to state 95
+    COMA               shift, and go to state 96
+
+
+state 91
+
+   16 osi: OSI PARENTESIS_APERTURA . condicion_list PARENTESIS_CIERRE statement_list
+
+    OPERADOR_RESTA       shift, and go to state 21
+    PARENTESIS_APERTURA  shift, and go to state 22
+    OPERADOR_NEGACION    shift, and go to state 23
+    ENTERO               shift, and go to state 24
+    REAL                 shift, and go to state 25
+    TEXTO                shift, and go to state 26
+    IDENTIFICADOR        shift, and go to state 27
+    BOOL                 shift, and go to state 28
+
+    condicion_list  go to state 97
+    condicion       go to state 30
+    exp             go to state 31
+    term            go to state 32
+    factor          go to state 33
+
+
+state 92
+
+    3 statement_list: statement_list . statement
+   13 si_statement: SI PARENTESIS_APERTURA condicion_list PARENTESIS_CIERRE statement_list SINO statement_list . FIN
+
+    SI             shift, and go to state 1
+    MIENTRAS       shift, and go to state 2
+    FIN            shift, and go to state 98
+    IMPRIMIR       shift, and go to state 3
+    PARA           shift, and go to state 4
+    IDENTIFICADOR  shift, and go to state 5
+
+    statement             go to state 20
+    imprimir_statement    go to state 9
+    asignacion_statement  go to state 10
+    si_statement          go to state 11
+    mientras_statement    go to state 12
+    para_statement        go to state 13
+
+
+state 93
+
+   11 si_statement: SI PARENTESIS_APERTURA condicion_list PARENTESIS_CIERRE statement_list osi_list FIN .
+
+    $default  reduce using rule 11 (si_statement)
+
+
+state 94
+
+   15 osi_list: osi_list osi .
+
+    $default  reduce using rule 15 (osi_list)
+
+
+state 95
+
+   19 para_statement: PARA IDENTIFICADOR EN RANGO PARENTESIS_APERTURA ENTERO PARENTESIS_CIERRE . statement_list FIN
+
+    SI             shift, and go to state 1
+    MIENTRAS       shift, and go to state 2
+    IMPRIMIR       shift, and go to state 3
+    PARA           shift, and go to state 4
+    IDENTIFICADOR  shift, and go to state 5
+
+    statement_list        go to state 99
+    statement             go to state 8
+    imprimir_statement    go to state 9
+    asignacion_statement  go to state 10
+    si_statement          go to state 11
+    mientras_statement    go to state 12
+    para_statement        go to state 13
+
+
+state 96
+
+   18 para_statement: PARA IDENTIFICADOR EN RANGO PARENTESIS_APERTURA ENTERO COMA . ENTERO PARENTESIS_CIERRE statement_list FIN
+   20               | PARA IDENTIFICADOR EN RANGO PARENTESIS_APERTURA ENTERO COMA . ENTERO COMA ENTERO PARENTESIS_CIERRE statement_list FIN
+
+    ENTERO  shift, and go to state 100
+
+
+state 97
+
+   16 osi: OSI PARENTESIS_APERTURA condicion_list . PARENTESIS_CIERRE statement_list
+   21 condicion_list: condicion_list . OPERADOR_AND condicion
+   22               | condicion_list . OPERADOR_OR condicion
+
+    PARENTESIS_CIERRE  shift, and go to state 101
+    OPERADOR_AND       shift, and go to state 43
+    OPERADOR_OR        shift, and go to state 44
+
+
+state 98
+
+   13 si_statement: SI PARENTESIS_APERTURA condicion_list PARENTESIS_CIERRE statement_list SINO statement_list FIN .
+
+    $default  reduce using rule 13 (si_statement)
+
+
+state 99
+
+    3 statement_list: statement_list . statement
+   19 para_statement: PARA IDENTIFICADOR EN RANGO PARENTESIS_APERTURA ENTERO PARENTESIS_CIERRE statement_list . FIN
+
+    SI             shift, and go to state 1
+    MIENTRAS       shift, and go to state 2
+    FIN            shift, and go to state 102
+    IMPRIMIR       shift, and go to state 3
+    PARA           shift, and go to state 4
+    IDENTIFICADOR  shift, and go to state 5
+
+    statement             go to state 20
+    imprimir_statement    go to state 9
+    asignacion_statement  go to state 10
+    si_statement          go to state 11
+    mientras_statement    go to state 12
+    para_statement        go to state 13
+
+
+state 100
+
+   18 para_statement: PARA IDENTIFICADOR EN RANGO PARENTESIS_APERTURA ENTERO COMA ENTERO . PARENTESIS_CIERRE statement_list FIN
+   20               | PARA IDENTIFICADOR EN RANGO PARENTESIS_APERTURA ENTERO COMA ENTERO . COMA ENTERO PARENTESIS_CIERRE statement_list FIN
+
+    PARENTESIS_CIERRE  shift, and go to state 103
+    COMA               shift, and go to state 104
+
+
+state 101
+
+   16 osi: OSI PARENTESIS_APERTURA condicion_list PARENTESIS_CIERRE . statement_list
+
+    SI             shift, and go to state 1
+    MIENTRAS       shift, and go to state 2
+    IMPRIMIR       shift, and go to state 3
+    PARA           shift, and go to state 4
+    IDENTIFICADOR  shift, and go to state 5
+
+    statement_list        go to state 105
+    statement             go to state 8
+    imprimir_statement    go to state 9
+    asignacion_statement  go to state 10
+    si_statement          go to state 11
+    mientras_statement    go to state 12
+    para_statement        go to state 13
+
+
+state 102
+
+   19 para_statement: PARA IDENTIFICADOR EN RANGO PARENTESIS_APERTURA ENTERO PARENTESIS_CIERRE statement_list FIN .
+
+    $default  reduce using rule 19 (para_statement)
+
+
+state 103
+
+   18 para_statement: PARA IDENTIFICADOR EN RANGO PARENTESIS_APERTURA ENTERO COMA ENTERO PARENTESIS_CIERRE . statement_list FIN
+
+    SI             shift, and go to state 1
+    MIENTRAS       shift, and go to state 2
+    IMPRIMIR       shift, and go to state 3
+    PARA           shift, and go to state 4
+    IDENTIFICADOR  shift, and go to state 5
+
+    statement_list        go to state 106
+    statement             go to state 8
+    imprimir_statement    go to state 9
+    asignacion_statement  go to state 10
+    si_statement          go to state 11
+    mientras_statement    go to state 12
+    para_statement        go to state 13
+
+
+state 104
+
+   20 para_statement: PARA IDENTIFICADOR EN RANGO PARENTESIS_APERTURA ENTERO COMA ENTERO COMA . ENTERO PARENTESIS_CIERRE statement_list FIN
+
+    ENTERO  shift, and go to state 107
+
+
+state 105
+
+    3 statement_list: statement_list . statement
+   16 osi: OSI PARENTESIS_APERTURA condicion_list PARENTESIS_CIERRE statement_list .
+
+    SI             shift, and go to state 1
+    MIENTRAS       shift, and go to state 2
+    IMPRIMIR       shift, and go to state 3
+    PARA           shift, and go to state 4
+    IDENTIFICADOR  shift, and go to state 5
+
+    $default  reduce using rule 16 (osi)
+
+    statement             go to state 20
+    imprimir_statement    go to state 9
+    asignacion_statement  go to state 10
+    si_statement          go to state 11
+    mientras_statement    go to state 12
+    para_statement        go to state 13
+
+
+state 106
+
+    3 statement_list: statement_list . statement
+   18 para_statement: PARA IDENTIFICADOR EN RANGO PARENTESIS_APERTURA ENTERO COMA ENTERO PARENTESIS_CIERRE statement_list . FIN
+
+    SI             shift, and go to state 1
+    MIENTRAS       shift, and go to state 2
+    FIN            shift, and go to state 108
+    IMPRIMIR       shift, and go to state 3
+    PARA           shift, and go to state 4
+    IDENTIFICADOR  shift, and go to state 5
+
+    statement             go to state 20
+    imprimir_statement    go to state 9
+    asignacion_statement  go to state 10
+    si_statement          go to state 11
+    mientras_statement    go to state 12
+    para_statement        go to state 13
+
+
+state 107
+
+   20 para_statement: PARA IDENTIFICADOR EN RANGO PARENTESIS_APERTURA ENTERO COMA ENTERO COMA ENTERO . PARENTESIS_CIERRE statement_list FIN
+
+    PARENTESIS_CIERRE  shift, and go to state 109
+
+
+state 108
+
+   18 para_statement: PARA IDENTIFICADOR EN RANGO PARENTESIS_APERTURA ENTERO COMA ENTERO PARENTESIS_CIERRE statement_list FIN .
+
+    $default  reduce using rule 18 (para_statement)
+
+
+state 109
+
+   20 para_statement: PARA IDENTIFICADOR EN RANGO PARENTESIS_APERTURA ENTERO COMA ENTERO COMA ENTERO PARENTESIS_CIERRE . statement_list FIN
+
+    SI             shift, and go to state 1
+    MIENTRAS       shift, and go to state 2
+    IMPRIMIR       shift, and go to state 3
+    PARA           shift, and go to state 4
+    IDENTIFICADOR  shift, and go to state 5
+
+    statement_list        go to state 110
+    statement             go to state 8
+    imprimir_statement    go to state 9
+    asignacion_statement  go to state 10
+    si_statement          go to state 11
+    mientras_statement    go to state 12
+    para_statement        go to state 13
+
+
+state 110
+
+    3 statement_list: statement_list . statement
+   20 para_statement: PARA IDENTIFICADOR EN RANGO PARENTESIS_APERTURA ENTERO COMA ENTERO COMA ENTERO PARENTESIS_CIERRE statement_list . FIN
+
+    SI             shift, and go to state 1
+    MIENTRAS       shift, and go to state 2
+    FIN            shift, and go to state 111
+    IMPRIMIR       shift, and go to state 3
+    PARA           shift, and go to state 4
+    IDENTIFICADOR  shift, and go to state 5
+
+    statement             go to state 20
+    imprimir_statement    go to state 9
+    asignacion_statement  go to state 10
+    si_statement          go to state 11
+    mientras_statement    go to state 12
+    para_statement        go to state 13
+
+
+state 111
+
+   20 para_statement: PARA IDENTIFICADOR EN RANGO PARENTESIS_APERTURA ENTERO COMA ENTERO COMA ENTERO PARENTESIS_CIERRE statement_list FIN .
+
+    $default  reduce using rule 20 (para_statement)
