@@ -87,15 +87,12 @@ extern int yylineno;
 
 //Variables de la tabla de símbolos
 symbol table[100];
-int table_size = 0;//Se usa para conocer el índice del array disponible para insertar el siguiente número
-
-//int numEtiqueta=0;
-//bool variableGlobalFaltaEtiqueta= false;
+int table_index = 0;//Se usa para conocer el índice del array disponible para insertar el siguiente número
 
 
 
 /* Line 189 of yacc.c  */
-#line 99 "y.tab.c"
+#line 96 "y.tab.c"
 
 /* Enabling traces.  */
 #ifndef YYDEBUG
@@ -206,7 +203,7 @@ typedef union YYSTYPE
 {
 
 /* Line 214 of yacc.c  */
-#line 28 ".\\bison.y"
+#line 25 ".\\bison.y"
 
   int intVal;
   float floatVal;
@@ -223,7 +220,7 @@ typedef union YYSTYPE
 
 
 /* Line 214 of yacc.c  */
-#line 227 "y.tab.c"
+#line 224 "y.tab.c"
 } YYSTYPE;
 # define YYSTYPE_IS_TRIVIAL 1
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */
@@ -235,7 +232,7 @@ typedef union YYSTYPE
 
 
 /* Line 264 of yacc.c  */
-#line 239 "y.tab.c"
+#line 236 "y.tab.c"
 
 #ifdef short
 # undef short
@@ -545,12 +542,12 @@ static const yytype_int8 yyrhs[] =
 /* YYRLINE[YYN] -- source line where rule number YYN was defined.  */
 static const yytype_uint16 yyrline[] =
 {
-       0,    73,    73,    90,    94,   106,   109,   112,   114,   116,
-     122,   134,   161,   162,   170,   181,   182,   185,   190,   201,
-     209,   217,   228,   229,   230,   243,   247,   251,   255,   259,
-     263,   267,   271,   277,   288,   334,   380,   391,   396,   442,
-     508,   523,   537,   539,   583,   591,   599,   607,   615,   618,
-     622
+       0,    70,    70,    87,    91,   103,   106,   109,   111,   113,
+     119,   131,   158,   159,   167,   178,   179,   182,   187,   198,
+     206,   214,   225,   226,   227,   240,   244,   248,   252,   256,
+     260,   264,   268,   274,   285,   331,   377,   388,   393,   439,
+     505,   520,   534,   536,   580,   588,   596,   604,   612,   615,
+     619
 };
 #endif
 
@@ -1549,7 +1546,7 @@ yyreduce:
         case 2:
 
 /* Line 1464 of yacc.c  */
-#line 73 ".\\bison.y"
+#line 70 ".\\bison.y"
     {
         printf("------------------------\n");
         printf("SENTENCIA RECONOCIDA\n");
@@ -1568,7 +1565,7 @@ yyreduce:
   case 3:
 
 /* Line 1464 of yacc.c  */
-#line 90 ".\\bison.y"
+#line 87 ".\\bison.y"
     {
         printf("-> STATEMENT\n");
         (yyval.tr).a=(yyvsp[(1) - (1)].tr).a;
@@ -1578,7 +1575,7 @@ yyreduce:
   case 4:
 
 /* Line 1464 of yacc.c  */
-#line 94 ".\\bison.y"
+#line 91 ".\\bison.y"
     {
         printf("-> STATEMENT LIST\n");
         (yyval.tr).a = nuevo_nodo('SL', (yyvsp[(1) - (2)].tr).a, (yyvsp[(2) - (2)].tr).a);
@@ -1592,7 +1589,7 @@ yyreduce:
   case 5:
 
 /* Line 1464 of yacc.c  */
-#line 106 ".\\bison.y"
+#line 103 ".\\bison.y"
     {
         (yyval.tr).a=(yyvsp[(1) - (1)].tr).a;
     }
@@ -1601,7 +1598,7 @@ yyreduce:
   case 6:
 
 /* Line 1464 of yacc.c  */
-#line 109 ".\\bison.y"
+#line 106 ".\\bison.y"
     {
         (yyval.tr).a=(yyvsp[(1) - (1)].tr).a;
     }
@@ -1610,7 +1607,7 @@ yyreduce:
   case 7:
 
 /* Line 1464 of yacc.c  */
-#line 112 ".\\bison.y"
+#line 109 ".\\bison.y"
     {
     }
     break;
@@ -1618,7 +1615,7 @@ yyreduce:
   case 8:
 
 /* Line 1464 of yacc.c  */
-#line 114 ".\\bison.y"
+#line 111 ".\\bison.y"
     {
     }
     break;
@@ -1626,7 +1623,7 @@ yyreduce:
   case 9:
 
 /* Line 1464 of yacc.c  */
-#line 116 ".\\bison.y"
+#line 113 ".\\bison.y"
     {
         (yyval.tr).a=(yyvsp[(1) - (1)].tr).a;
     }
@@ -1635,7 +1632,7 @@ yyreduce:
   case 10:
 
 /* Line 1464 of yacc.c  */
-#line 122 ".\\bison.y"
+#line 119 ".\\bison.y"
     { 
             printf("-> IMPRIMIR\n");
             (yyval.tr).a = nuevo_nodo('P',(yyvsp[(3) - (4)].tr).a, nodo_vacio());
@@ -1650,13 +1647,13 @@ yyreduce:
   case 11:
 
 /* Line 1464 of yacc.c  */
-#line 134 ".\\bison.y"
+#line 131 ".\\bison.y"
     {
         printf("-> ASIGNACION\n");
-        int i = lookup((yyvsp[(1) - (3)].stringVal),table_size,table);
+        int i = lookup((yyvsp[(1) - (3)].stringVal),table_index,table);
         if (i == -1) {  
-            create_or_update_variable((yyvsp[(1) - (3)].stringVal), (yyvsp[(3) - (3)].tr).tipo, (yyvsp[(3) - (3)].tr), table_size);
-            table_size++;
+            create_or_update_variable((yyvsp[(1) - (3)].stringVal), (yyvsp[(3) - (3)].tr).tipo, (yyvsp[(3) - (3)].tr), table_index);
+            table_index++;
 
             (yyval.tr).a=nuevo_nodo('A',(yyvsp[(3) - (3)].tr).a, nodo_vacio());
             if((yyval.tr).a->registro==-1){
@@ -1679,14 +1676,14 @@ yyreduce:
   case 12:
 
 /* Line 1464 of yacc.c  */
-#line 161 ".\\bison.y"
+#line 158 ".\\bison.y"
     {printf("Bucle SI con cadena de OSI\n");}
     break;
 
   case 13:
 
 /* Line 1464 of yacc.c  */
-#line 162 ".\\bison.y"
+#line 159 ".\\bison.y"
     {
         printf("-> SI\n");
         (yyval.tr).a = nuevo_nodo('S',(yyvsp[(3) - (6)].tr).a, (yyvsp[(5) - (6)].tr).a);
@@ -1700,7 +1697,7 @@ yyreduce:
   case 14:
 
 /* Line 1464 of yacc.c  */
-#line 170 ".\\bison.y"
+#line 167 ".\\bison.y"
     {
         printf("-> SI con SINO\n");
         (yyval.tr).a = nuevo_nodo_sino((yyvsp[(3) - (8)].tr).a,(yyvsp[(5) - (8)].tr).a, (yyvsp[(7) - (8)].tr).a);
@@ -1714,28 +1711,28 @@ yyreduce:
   case 15:
 
 /* Line 1464 of yacc.c  */
-#line 181 ".\\bison.y"
+#line 178 ".\\bison.y"
     {printf("UN OSI\n");}
     break;
 
   case 16:
 
 /* Line 1464 of yacc.c  */
-#line 182 ".\\bison.y"
+#line 179 ".\\bison.y"
     {printf("VARIOS OSI\n");}
     break;
 
   case 17:
 
 /* Line 1464 of yacc.c  */
-#line 185 ".\\bison.y"
+#line 182 ".\\bison.y"
     {printf("OSI\n");}
     break;
 
   case 18:
 
 /* Line 1464 of yacc.c  */
-#line 190 ".\\bison.y"
+#line 187 ".\\bison.y"
     {
         printf("-> MIENTRAS\n");
         (yyval.tr).a = nuevo_nodo('M',(yyvsp[(3) - (6)].tr).a,(yyvsp[(5) - (6)].tr).a);
@@ -1749,7 +1746,7 @@ yyreduce:
   case 19:
 
 /* Line 1464 of yacc.c  */
-#line 201 ".\\bison.y"
+#line 198 ".\\bison.y"
     {
         printf("-> PARA\n");
         (yyval.tr).a = nuevo_nodo_para(strdup((yyvsp[(2) - (11)].stringVal)), (yyvsp[(6) - (11)].intVal), (yyvsp[(8) - (11)].intVal), (yyvsp[(10) - (11)].tr).a);
@@ -1763,7 +1760,7 @@ yyreduce:
   case 20:
 
 /* Line 1464 of yacc.c  */
-#line 209 ".\\bison.y"
+#line 206 ".\\bison.y"
     {
         printf("-> PARA2\n");
         (yyval.tr).a = nuevo_nodo_para2(strdup((yyvsp[(2) - (9)].stringVal)), (yyvsp[(6) - (9)].intVal), (yyvsp[(8) - (9)].tr).a);
@@ -1777,7 +1774,7 @@ yyreduce:
   case 21:
 
 /* Line 1464 of yacc.c  */
-#line 217 ".\\bison.y"
+#line 214 ".\\bison.y"
     {
         printf("-> PARA3\n");
         (yyval.tr).a = nuevo_nodo_para3(strdup((yyvsp[(2) - (13)].stringVal)), (yyvsp[(6) - (13)].intVal), (yyvsp[(8) - (13)].intVal), (yyvsp[(10) - (13)].intVal), (yyvsp[(12) - (13)].tr).a);
@@ -1791,21 +1788,21 @@ yyreduce:
   case 22:
 
 /* Line 1464 of yacc.c  */
-#line 228 ".\\bison.y"
+#line 225 ".\\bison.y"
     {printf("Condicion && condicion\n");}
     break;
 
   case 23:
 
 /* Line 1464 of yacc.c  */
-#line 229 ".\\bison.y"
+#line 226 ".\\bison.y"
     {printf("Condicion || condicion\n");}
     break;
 
   case 24:
 
 /* Line 1464 of yacc.c  */
-#line 230 ".\\bison.y"
+#line 227 ".\\bison.y"
     {
         (yyval.tr).a = (yyvsp[(1) - (1)].tr).a;
         printf("-> CONDICION\n");
@@ -1821,7 +1818,7 @@ yyreduce:
   case 25:
 
 /* Line 1464 of yacc.c  */
-#line 243 ".\\bison.y"
+#line 240 ".\\bison.y"
     {
         printf("exp OPERADOR_MAYOR exp\n");
         compare_expression(">", (yyvsp[(1) - (3)].tr).tipo, (yyvsp[(3) - (3)].tr).tipo, (yyvsp[(1) - (3)].tr), (yyvsp[(3) - (3)].tr), &(yyval.tr));
@@ -1831,7 +1828,7 @@ yyreduce:
   case 26:
 
 /* Line 1464 of yacc.c  */
-#line 247 ".\\bison.y"
+#line 244 ".\\bison.y"
     {
         printf("exp OPERADOR_MENOR exp\n");
         compare_expression("<", (yyvsp[(1) - (3)].tr).tipo, (yyvsp[(3) - (3)].tr).tipo, (yyvsp[(1) - (3)].tr), (yyvsp[(3) - (3)].tr), &(yyval.tr));
@@ -1841,7 +1838,7 @@ yyreduce:
   case 27:
 
 /* Line 1464 of yacc.c  */
-#line 251 ".\\bison.y"
+#line 248 ".\\bison.y"
     {
         printf("exp OPERADOR_MAYOR_IGUAL exp\n");
         compare_expression(">=", (yyvsp[(1) - (3)].tr).tipo, (yyvsp[(3) - (3)].tr).tipo, (yyvsp[(1) - (3)].tr), (yyvsp[(3) - (3)].tr), &(yyval.tr));
@@ -1851,7 +1848,7 @@ yyreduce:
   case 28:
 
 /* Line 1464 of yacc.c  */
-#line 255 ".\\bison.y"
+#line 252 ".\\bison.y"
     {
         printf("exp OPERADOR_MENOR_IGUAL exp\n");
         compare_expression("<=", (yyvsp[(1) - (3)].tr).tipo, (yyvsp[(3) - (3)].tr).tipo, (yyvsp[(1) - (3)].tr), (yyvsp[(3) - (3)].tr), &(yyval.tr));
@@ -1861,7 +1858,7 @@ yyreduce:
   case 29:
 
 /* Line 1464 of yacc.c  */
-#line 259 ".\\bison.y"
+#line 256 ".\\bison.y"
     {
         printf("exp OPERADOR_IGUAL exp\n");
         compare_expression("==", (yyvsp[(1) - (3)].tr).tipo, (yyvsp[(3) - (3)].tr).tipo, (yyvsp[(1) - (3)].tr), (yyvsp[(3) - (3)].tr), &(yyval.tr));
@@ -1871,7 +1868,7 @@ yyreduce:
   case 30:
 
 /* Line 1464 of yacc.c  */
-#line 263 ".\\bison.y"
+#line 260 ".\\bison.y"
     {
         printf("exp OPERADOR_DIFERENTE exp\n");
         compare_expression("!=", (yyvsp[(1) - (3)].tr).tipo, (yyvsp[(3) - (3)].tr).tipo, (yyvsp[(1) - (3)].tr), (yyvsp[(3) - (3)].tr), &(yyval.tr));
@@ -1881,7 +1878,7 @@ yyreduce:
   case 31:
 
 /* Line 1464 of yacc.c  */
-#line 267 ".\\bison.y"
+#line 264 ".\\bison.y"
     {
         printf("exp OPERADOR_AND exp\n");
         compare_expression("&&", (yyvsp[(1) - (3)].tr).tipo, (yyvsp[(3) - (3)].tr).tipo, (yyvsp[(1) - (3)].tr), (yyvsp[(3) - (3)].tr), &(yyval.tr));
@@ -1891,7 +1888,7 @@ yyreduce:
   case 32:
 
 /* Line 1464 of yacc.c  */
-#line 271 ".\\bison.y"
+#line 268 ".\\bison.y"
     {
         printf("exp OPERADOR_OR exp\n");
         compare_expression("||", (yyvsp[(1) - (3)].tr).tipo, (yyvsp[(3) - (3)].tr).tipo, (yyvsp[(1) - (3)].tr), (yyvsp[(3) - (3)].tr), &(yyval.tr));
@@ -1901,7 +1898,7 @@ yyreduce:
   case 33:
 
 /* Line 1464 of yacc.c  */
-#line 277 ".\\bison.y"
+#line 274 ".\\bison.y"
     {
         if (strcmp((yyvsp[(2) - (2)].tr).tipo, "booleano")==0) {
             (yyval.tr).booleano = !(yyvsp[(2) - (2)].tr).booleano; 
@@ -1917,7 +1914,7 @@ yyreduce:
   case 34:
 
 /* Line 1464 of yacc.c  */
-#line 288 ".\\bison.y"
+#line 285 ".\\bison.y"
     {
         if (strcmp((yyvsp[(1) - (3)].tr).tipo, "entero")==0 && strcmp((yyvsp[(3) - (3)].tr).tipo, "entero")==0) { //Si ambos son enteros
             (yyval.tr).a = nuevo_nodo('+', (yyvsp[(1) - (3)].tr).a,(yyvsp[(3) - (3)].tr).a); 
@@ -1969,7 +1966,7 @@ yyreduce:
   case 35:
 
 /* Line 1464 of yacc.c  */
-#line 334 ".\\bison.y"
+#line 331 ".\\bison.y"
     {
         if (strcmp((yyvsp[(1) - (3)].tr).tipo, "entero")==0 && strcmp((yyvsp[(3) - (3)].tr).tipo, "entero")==0) { //Si ambos son enteros
             (yyval.tr).a = nuevo_nodo('-', (yyvsp[(1) - (3)].tr).a,(yyvsp[(3) - (3)].tr).a);
@@ -2021,7 +2018,7 @@ yyreduce:
   case 36:
 
 /* Line 1464 of yacc.c  */
-#line 380 ".\\bison.y"
+#line 377 ".\\bison.y"
     {
         if (strcmp((yyvsp[(1) - (3)].tr).tipo, "texto")==0 && strcmp((yyvsp[(3) - (3)].tr).tipo, "texto")==0){
             (yyval.tr).texto = strcat((yyvsp[(1) - (3)].tr).texto, (yyvsp[(3) - (3)].tr).texto);
@@ -2038,7 +2035,7 @@ yyreduce:
   case 37:
 
 /* Line 1464 of yacc.c  */
-#line 391 ".\\bison.y"
+#line 388 ".\\bison.y"
     {
         (yyval.tr) = (yyvsp[(1) - (1)].tr); }
     break;
@@ -2046,7 +2043,7 @@ yyreduce:
   case 38:
 
 /* Line 1464 of yacc.c  */
-#line 396 ".\\bison.y"
+#line 393 ".\\bison.y"
     {
         if (strcmp((yyvsp[(1) - (3)].tr).tipo, "entero")==0 && strcmp((yyvsp[(3) - (3)].tr).tipo, "entero")==0) { //Si ambos son enteros
             (yyval.tr).a = nuevo_nodo('*', (yyvsp[(1) - (3)].tr).a,(yyvsp[(3) - (3)].tr).a);
@@ -2098,7 +2095,7 @@ yyreduce:
   case 39:
 
 /* Line 1464 of yacc.c  */
-#line 442 ".\\bison.y"
+#line 439 ".\\bison.y"
     {
         if (strcmp((yyvsp[(1) - (3)].tr).tipo, "entero")==0 && strcmp((yyvsp[(3) - (3)].tr).tipo, "entero")==0) { //Si ambos son enteros
             if ((yyvsp[(3) - (3)].tr).entero == 0) {
@@ -2170,7 +2167,7 @@ yyreduce:
   case 40:
 
 /* Line 1464 of yacc.c  */
-#line 508 ".\\bison.y"
+#line 505 ".\\bison.y"
     { //solo se puede hacer con enteros
         printf("-> MODULO\n");
         if (strcmp((yyvsp[(1) - (3)].tr).tipo, "entero")==0 && strcmp((yyvsp[(3) - (3)].tr).tipo, "entero")==0) { //Si ambos son enteros
@@ -2191,7 +2188,7 @@ yyreduce:
   case 41:
 
 /* Line 1464 of yacc.c  */
-#line 523 ".\\bison.y"
+#line 520 ".\\bison.y"
     { //solo se puede hacer con enteros
         if (strcmp((yyvsp[(1) - (3)].tr).tipo, "entero")==0 && strcmp((yyvsp[(3) - (3)].tr).tipo, "entero")==0) { //Si ambos son enteros
             (yyval.tr).a = nuevo_nodo('^', (yyvsp[(1) - (3)].tr).a,(yyvsp[(3) - (3)].tr).a);
@@ -2211,7 +2208,7 @@ yyreduce:
   case 42:
 
 /* Line 1464 of yacc.c  */
-#line 537 ".\\bison.y"
+#line 534 ".\\bison.y"
     {
         (yyval.tr) = (yyvsp[(1) - (1)].tr);}
     break;
@@ -2219,12 +2216,12 @@ yyreduce:
   case 43:
 
 /* Line 1464 of yacc.c  */
-#line 539 ".\\bison.y"
+#line 536 ".\\bison.y"
     {
             printf("->IDENTIFICADOR%s\n",(yyvsp[(1) - (1)].stringVal));
             //printf("Hemos encontrado un identificador");
             //Hemos encontrado un identificador, hay que ver si está en la tabla para recogerlo y sino devolver un error
-            int i = lookup((yyvsp[(1) - (1)].stringVal),table_size,table); //lo buscamos
+            int i = lookup((yyvsp[(1) - (1)].stringVal),table_index,table); //lo buscamos
             if(i == -1){
                 printf( "ERROR LINEA %d: Se usa una variable que no ha sido definida anteriormente", yylineno);
             }
@@ -2266,7 +2263,7 @@ yyreduce:
   case 44:
 
 /* Line 1464 of yacc.c  */
-#line 583 ".\\bison.y"
+#line 580 ".\\bison.y"
     {(yyval.tr).entero = (yyvsp[(1) - (1)].intVal);
             (yyval.tr).a = nuevo_hoja_numero((yyvsp[(1) - (1)].intVal));
             if((yyval.tr).a->registro==-1){
@@ -2280,7 +2277,7 @@ yyreduce:
   case 45:
 
 /* Line 1464 of yacc.c  */
-#line 591 ".\\bison.y"
+#line 588 ".\\bison.y"
     {(yyval.tr).entero = -(yyvsp[(2) - (2)].intVal);
             (yyval.tr).a = nuevo_hoja_numero(-(yyvsp[(2) - (2)].intVal));
             if((yyval.tr).a->registro==-1){
@@ -2294,7 +2291,7 @@ yyreduce:
   case 46:
 
 /* Line 1464 of yacc.c  */
-#line 599 ".\\bison.y"
+#line 596 ".\\bison.y"
     {(yyval.tr).real = (yyvsp[(1) - (1)].floatVal);
             (yyval.tr).a = nuevo_hoja_numero((yyvsp[(1) - (1)].floatVal));
             if((yyval.tr).a->registro==-1){
@@ -2308,7 +2305,7 @@ yyreduce:
   case 47:
 
 /* Line 1464 of yacc.c  */
-#line 607 ".\\bison.y"
+#line 604 ".\\bison.y"
     {(yyval.tr).real = -(yyvsp[(2) - (2)].floatVal);
             (yyval.tr).a = nuevo_hoja_numero(-(yyvsp[(2) - (2)].floatVal));
             if((yyval.tr).a->registro==-1){
@@ -2322,7 +2319,7 @@ yyreduce:
   case 48:
 
 /* Line 1464 of yacc.c  */
-#line 615 ".\\bison.y"
+#line 612 ".\\bison.y"
     {
             (yyval.tr) = (yyvsp[(2) - (3)].tr);
             printf("PARENTESIS\n");}
@@ -2331,7 +2328,7 @@ yyreduce:
   case 49:
 
 /* Line 1464 of yacc.c  */
-#line 618 ".\\bison.y"
+#line 615 ".\\bison.y"
     {
             (yyval.tr).texto = (yyvsp[(1) - (1)].stringVal);
             (yyval.tr).tipo="texto";
@@ -2341,7 +2338,7 @@ yyreduce:
   case 50:
 
 /* Line 1464 of yacc.c  */
-#line 622 ".\\bison.y"
+#line 619 ".\\bison.y"
     {
             (yyval.tr).booleano = (yyvsp[(1) - (1)].intVal);
             (yyval.tr).tipo="booleano";
@@ -2351,7 +2348,7 @@ yyreduce:
 
 
 /* Line 1464 of yacc.c  */
-#line 2355 "y.tab.c"
+#line 2352 "y.tab.c"
       default: break;
     }
   YY_SYMBOL_PRINT ("-> $$ =", yyr1[yyn], &yyval, &yyloc);
@@ -2563,7 +2560,7 @@ yyreturn:
 
 
 /* Line 1684 of yacc.c  */
-#line 628 ".\\bison.y"
+#line 625 ".\\bison.y"
 
 
 void create_node_check_reg(struct atributos *dest, char* operator, struct atributos src1, struct atributos src2) {
