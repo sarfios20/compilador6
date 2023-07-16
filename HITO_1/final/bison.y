@@ -17,10 +17,7 @@ extern int yylineno;
 
 //Variables de la tabla de símbolos
 symbol table[100];
-int table_size = 0;//Se usa para conocer el índice del array disponible para insertar el siguiente número
-
-//int numEtiqueta=0;
-//bool variableGlobalFaltaEtiqueta= false;
+int table_index = 0;//Se usa para conocer el índice del array disponible para insertar el siguiente número
 
 %}
 
@@ -133,10 +130,10 @@ imprimir_statement:
 asignacion_statement:
     IDENTIFICADOR OPERADOR_ASIGNACION exp {
         printf("-> ASIGNACION\n");
-        int i = lookup($1,table_size,table);
+        int i = lookup($1,table_index,table);
         if (i == -1) {  
-            create_or_update_variable($1, $3.tipo, $3, table_size);
-            table_size++;
+            create_or_update_variable($1, $3.tipo, $3, table_index);
+            table_index++;
 
             $$.a=nuevo_nodo('A',$3.a, nodo_vacio());
             if($$.a->registro==-1){
@@ -540,7 +537,7 @@ term:
             printf("->IDENTIFICADOR%s\n",$1);
             //printf("Hemos encontrado un identificador");
             //Hemos encontrado un identificador, hay que ver si está en la tabla para recogerlo y sino devolver un error
-            int i = lookup($1,table_size,table); //lo buscamos
+            int i = lookup($1,table_index,table); //lo buscamos
             if(i == -1){
                 printf( "ERROR LINEA %d: Se usa una variable que no ha sido definida anteriormente", yylineno);
             }

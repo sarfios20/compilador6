@@ -15,6 +15,6 @@ typedef struct {
 } symbol;
 
 // Función para buscar un símbolo en la tabla
-int lookup(char *name, int table_size, symbol table[]);
+int lookup(char *name, int table_index, symbol table[]);
 
 #endif

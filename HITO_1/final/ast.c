@@ -502,14 +502,13 @@ double evaluar(struct nodo *a)
   case 'P': // Imprimir
 
     evaluar(a->nodo_izq);
-    // Imprime el resultado almacenado en al registro de
     imprimir(a->nodo_izq);
     break;
 
   case 'SL': // Statement List
 
-    v = evaluar(a->nodo_izq); // statement_list
-    evaluar(a->nodo_dch);     // statement
+    v = evaluar(a->nodo_izq);
+    evaluar(a->nodo_dch);    
     break;
       
   default:
@@ -521,7 +520,7 @@ double evaluar(struct nodo *a)
 double escribir_mips(struct nodo *a)
 {
   // Crea todas las variables necesarias en .data
-  fprintf(archivo_salida, "\n.data #Variables\n");
+  fprintf(archivo_salida, "\n.data\n");
   // Variable que SIEMPRE se imprime para el salto de línea
   fprintf(archivo_salida, "  nuevaLinea: .asciiz \"\\n\"\n");
   // Variable que SIEMPRE se imprime para tener un cero flotante
@@ -529,20 +528,17 @@ double escribir_mips(struct nodo *a)
   // Recorremos el array de las variables que hay que definir
   for (int i = 0; i < 32; i++)
   {
-    // Si el espacio del array tiene algo
     if (variables_array[i][2] == 1)
     {
-      // Define la variable
       fprintf(archivo_salida, "  variable%d: .float %f\n", (int)variables_array[i][1], variables_array[i][0]);
-      // La elimina pues ya se ha declarado
       variables_array[i][2] = 0;
     }
   }
-
-  fprintf(archivo_salida, "\n.text #Operaciones\n");
+  // Crea el código MIPS
+  fprintf(archivo_salida, "\n.text\n");
   fprintf(archivo_salida, "  lwc1 $f31, cero_f\n\n");
 
-  return evaluar(a); // Con las variables ya definidas, comienza a evaluar la operación
+  return evaluar(a);
 }
 
 void imprimir(struct nodo *a)
@@ -551,10 +547,8 @@ void imprimir(struct nodo *a)
   fprintf(archivo_salida, "  li $v0, 2\n");
   // Mover del registro n al registro 12
   fprintf(archivo_salida, "  add.s $f12, $f31, $f%d\n", a->registro);
-  // Llamada al sistema
   fprintf(archivo_salida, "  syscall\n");
 
-  // Salto de línea
   fprintf(archivo_salida, "  li $v0, 4\n");
   fprintf(archivo_salida, "  la $a0, nuevaLinea\n");
   fprintf(archivo_salida, "  syscall\n");
